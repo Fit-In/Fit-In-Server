@@ -34,11 +34,8 @@ public class AccountServiceTest {
     public  void 회원가입() throws Exception{
 
         //given
-        Account account = new Account();
-        account.setEmail("fitin@naver.com");
+        Account account = new Account("fitin","fitin@naver.com",Role.USER);
         account.setPassword("1234");
-        account.setName("fitin");
-        account.setRole(Role.USER);
         //when
         Long saveId = accountService.join(account);
 
@@ -51,17 +48,11 @@ public class AccountServiceTest {
     @Test(expected = IllegalStateException.class)
     public void 중복_회원_예외() throws Exception{
         //given
-        Account account1 = new Account();
-        account1.setEmail("fitin@naver.com");
+        Account account1 = new Account("fitin","fitin@naver.com",Role.USER);
         account1.setPassword("1234");
-        account1.setName("fitin");
-        account1.setRole(Role.USER);
 
-        Account account2 = new Account();
-        account2.setEmail("fitin@naver.com");
+        Account account2 = new Account("fitin","fitin@naver.com",Role.USER);
         account2.setPassword("1234");
-        account2.setName("fitin");
-        account2.setRole(Role.USER);
 
         //when
         accountService.join(account1);

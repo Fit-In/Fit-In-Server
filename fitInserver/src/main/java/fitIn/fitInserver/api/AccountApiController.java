@@ -2,6 +2,7 @@ package fitIn.fitInserver.api;
 
 
 import fitIn.fitInserver.domain.Account;
+import fitIn.fitInserver.domain.Role;
 import fitIn.fitInserver.service.AccountService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,11 +27,8 @@ public class AccountApiController {
     @PostMapping("/api/accounts")
     public CreateAccountResponse saveAccount(@RequestBody @Valid CreateAccountRequest request){
 
-        Account account = new Account();
-
-        account.setEmail(request.getEmail());
+        Account account = new Account(request.getName(), request.getEmail(),Role.USER);
         account.setPassword(request.getPassword());
-        account.setName(request.getName());
         Long id = accountService.join(account);
         return new CreateAccountResponse(id);
     }
