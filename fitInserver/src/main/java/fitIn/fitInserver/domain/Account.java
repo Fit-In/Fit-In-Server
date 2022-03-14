@@ -3,52 +3,41 @@ package fitIn.fitInserver.domain;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@NoArgsConstructor
+@Table(name = "account")
 public class Account {
 
-    @Id @GeneratedValue
-    @Column(name = "account_id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//기본 키 생성을 데이터베이스에 위임
+    @Column(name = "member_id")
     private Long id;
 
-    @Column(unique = true , nullable = false)
+    @Column(unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
 
 
     @Builder
-    public Account(String name, String email, Role role) {
+    public Account(String name, String password, String email, Role role) {
         this.name = name;
+        this.password = password;
         this.email = email;
         this.role = role;
     }
-
-    public Account update(String name) {
-        this.name = name;
-
-        return this;
-    }
-
-    public String getRoleKey() {
-        return this.role.getKey();
-    }
-
-
-
-
-
 
 }
