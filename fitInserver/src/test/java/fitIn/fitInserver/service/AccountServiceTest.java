@@ -34,7 +34,7 @@ public class AccountServiceTest {
     public  void 회원가입() throws Exception{
 
         //given
-        Account account = new Account("fitin","fitin@naver.com",Role.USER);
+        Account account = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_USER);
         account.setPassword("1234");
         //when
         Long saveId = accountService.join(account);
@@ -48,10 +48,10 @@ public class AccountServiceTest {
     @Test(expected = IllegalStateException.class)
     public void 중복_회원_예외() throws Exception{
         //given
-        Account account1 = new Account("fitin","fitin@naver.com",Role.USER);
+        Account account1 = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_ADMIN);
         account1.setPassword("1234");
 
-        Account account2 = new Account("fitin","fitin@naver.com",Role.USER);
+        Account account2 = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_ADMIN);
         account2.setPassword("1234");
 
         //when
