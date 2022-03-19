@@ -2,9 +2,11 @@ package fitIn.fitInserver.config;
 
 import fitIn.fitInserver.jwt.JwtAccessDeniedHandler;
 import fitIn.fitInserver.jwt.JwtAuthenticationEntryPoint;
+import fitIn.fitInserver.jwt.JwtFilter;
 import fitIn.fitInserver.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -24,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
+    private final RedisTemplate redisTemplate;
 
     @Bean
     public PasswordEncoder passwordEncoder() {//패스워드 encoder
@@ -70,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
                 .and()
-                .apply(new JwtSecurityConfig(tokenProvider));//만든 jwtfilter를 addfilterBefore로 등록했던 jwtSecurityConfig 클래스도 적용
+                .addFilterBefore(new JwtFilter(redisTemplate,tokenProvider),UsernamePasswordAuthenticationFilter.class);//만든 jwtfilter를 addfilterBefore로 등록했던 jwtSecurityConfig 클래스도 적용
     }
 
 }

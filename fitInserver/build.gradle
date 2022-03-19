@@ -41,6 +41,8 @@ dependencies {
 		exclude group: "org.hamcrest", module: "hamcrest-core"
 	}
 
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.4.10'
+
 
 }
 
