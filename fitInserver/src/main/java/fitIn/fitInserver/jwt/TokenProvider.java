@@ -4,6 +4,7 @@ import fitIn.fitInserver.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 
 
+@Slf4j
 @Component
 public class TokenProvider {
 
@@ -30,8 +32,8 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; //30분
-    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; //7일
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 30; //30분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7; //7일
 
 
     private final Key key;
@@ -70,7 +72,7 @@ public class TokenProvider {
         return TokenDto.builder() //생성한 토큰을 TokenDto로 반환해줌
                 .grantType(BEARER_TYPE)//JWT 사용 위해 인증타입 bearer 사용
                 .accessToken(accessToken)//accessToken
-                .accessTokenExpiresIn(accessTokenExpiresIn.getTime())//accessToken 만료시간
+                .refreshTokenExpiresIn(REFRESH_TOKEN_EXPIRE_TIME)//accessToken 만료시간
                 .refreshToken(refreshToken)//refreshToken
                 .build();
     }
@@ -122,6 +124,12 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    public Long getExpiration(String accessToken){
+        Date expiration = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody().getExpiration();
+        Long now = new Date().getTime();
+        return (expiration.getTime()-now);
     }
 
 }

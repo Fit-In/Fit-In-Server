@@ -5,11 +5,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Getter
+@Getter@Setter
 @NoArgsConstructor
 @Table(name = "account")
 public class Account {
@@ -39,5 +44,6 @@ public class Account {
         this.email = email;
         this.role = role;
     }
+
 
 }

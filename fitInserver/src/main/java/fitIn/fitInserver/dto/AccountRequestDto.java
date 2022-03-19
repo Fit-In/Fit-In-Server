@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Collections;
+
 
 @Getter
 @AllArgsConstructor
@@ -25,8 +27,8 @@ public class AccountRequestDto {
                 .password(passwordEncoder.encode(password))
                 .role(Role.ROLE_USER)
                 .build();
-
     }
+
 
     public UsernamePasswordAuthenticationToken toAuthentication(){
         return new UsernamePasswordAuthenticationToken(email, password);

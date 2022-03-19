@@ -15,5 +15,6 @@ public class AccountResponseDto {
     public static AccountResponseDto of(Account account)
     {
         return new AccountResponseDto(account.getEmail());
+
     }
 }

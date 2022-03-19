@@ -21,48 +21,48 @@ import static org.junit.Assert.fail;
 @Transactional
 public class AccountServiceTest {
 
-    @Autowired
-    AccountService accountService;
+//    @Autowired
+//    AccountService accountService;
+//
+//    @Autowired
+//    AccountRepository accountRepository;
+//
+//    @Autowired
+//    EntityManager em;
+//
+//    @Test
+//    public  void 회원가입() throws Exception{
+//
+//        //given
+//        Account account = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_USER);
+//        account.setPassword("1234");
+//        //when
+//        Long saveId = accountService.join(account);
+//
+//        //then
+//        em.flush();
+//        assertEquals(account, accountRepository.findOne(saveId));
+//
+//    }
 
-    @Autowired
-    AccountRepository accountRepository;
-
-    @Autowired
-    EntityManager em;
-
-    @Test
-    public  void 회원가입() throws Exception{
-
-        //given
-        Account account = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_USER);
-        account.setPassword("1234");
-        //when
-        Long saveId = accountService.join(account);
-
-        //then
-        em.flush();
-        assertEquals(account, accountRepository.findOne(saveId));
-
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void 중복_회원_예외() throws Exception{
-        //given
-        Account account1 = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_ADMIN);
-        account1.setPassword("1234");
-
-        Account account2 = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_ADMIN);
-        account2.setPassword("1234");
-
-        //when
-        accountService.join(account1);
-
-        accountService.join(account2);
-
-        //then
-        fail("예외가 발생해야 한다.");
-
-    }
+//    @Test(expected = IllegalStateException.class)
+//    public void 중복_회원_예외() throws Exception{
+//        //given
+//        Account account1 = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_ADMIN);
+//        account1.setPassword("1234");
+//
+//        Account account2 = new Account("fitin","aaa","fitin@naver.com",Role.ROLE_ADMIN);
+//        account2.setPassword("1234");
+//
+//        //when
+//        accountService.join(account1);
+//
+//        accountService.join(account2);
+//
+//        //then
+//        fail("예외가 발생해야 한다.");
+//
+//    }
 
 
 }
