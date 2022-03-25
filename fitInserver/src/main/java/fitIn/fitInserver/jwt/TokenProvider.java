@@ -44,6 +44,9 @@ public class TokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);//base64를 byte[]로 변환, byte[]로 key 생성
     }
 
+
+
+
     //https://tansfil.tistory.com/59
     //Authentication 유저 정보를 받아서 AccessToken, RefreshToken 생성
     public TokenDto generateTokenDto(Authentication authentication){
@@ -55,7 +58,7 @@ public class TokenProvider {
         long now = (new Date()).getTime();
 
         // Access Token 생성 - 유저와 권한정보를 담음
-        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);//토큰 만료시간 설정 30일
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);//토큰 만료시간 설정 30분
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())     //token 제목-payload, username으로 MemberID 저장
                 .claim(AUTHORITIES_KEY, authorities)       //payload(body)부분(claim)-정보 하나하나를 claim이라 부름
@@ -131,7 +134,6 @@ public class TokenProvider {
         Long now = new Date().getTime();
         return (expiration.getTime()-now);
     }
-
 }
 
 

@@ -40,16 +40,15 @@ public class AuthService {
         if(accountRepository.existByEmail(accountRequestDto.getEmail())){
             throw new RuntimeException("이미 가입되어 있는 유저입니다");
         }
-
         Account account = accountRequestDto.toAccount(passwordEncoder);//요청받아서 들어온 정보를 암호화
         return AccountResponseDto.of(accountRepository.save(account));//DB에 저장
-
     }
 
     //jwt검증후 로그인 메서드
     @Transactional
     public TokenDto login(AccountRequestDto accountRequestDto){
-        // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성, 아직 인증 완료된 객체가 아님, AuthenticationManger에서 authenticate메소드의 파라미터로 넘겨, 검증 후에 Authentication을 받음
+        // 첫 번째로 클라이언트에서 넘겨받은 ID/PW 를 기반으로 AuthenticationToken 생성한다
+        // 이는 아직 인증 완료된 객체가 아니며 두 번째 단계인 AuthenticationManger에서 authenticate메소드를 통해 검증을 통과해야만 JWT토큰이 생성된다
         UsernamePasswordAuthenticationToken authenticationToken = accountRequestDto.toAuthentication();//Authentication는 authenticate하나만 구현 된 인터페이스, 내부 수행 검증 과정은 CustomUserDetailsService에서 구현
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
@@ -67,7 +66,7 @@ public class AuthService {
 //                .value(tokenDto.getRefreshToken())
 //                .build();
 //
-//        refreshTokenRepository.save(refreshToken);//일단 refreshToken을 DB에 저장, 나중에 reddis로 구현 해야함
+//        refreshTokenRepository.save(refreshToken);//일단 refreshToken을 DB에 저장, 나중에 redis로 구현 해야함
 
         //4.RefreshToken Redis 저장(expirationTime 설정을 통해서 자동으로 삭제)
         redisTemplate.opsForValue()
@@ -75,6 +74,7 @@ public class AuthService {
         // 5. 토큰 발급
         return tokenDto;//생성된 토큰 정보 클라이언트에 전달
     }
+
 
 
     //토큰 재발급 메서드
@@ -126,6 +126,8 @@ public class AuthService {
         return tokenDto;//client에 새로운 토큰 전달
 
     }
+
+
     @Transactional
     public TokenDto logout(TokenRequestDto tokenRequestDto){
         //1. AccessToken 검증
@@ -146,5 +148,6 @@ public class AuthService {
                 .set(tokenRequestDto.getAccessToken(),"logout",expiration,TimeUnit.MILLISECONDS);
 
         throw new RuntimeException("로그아웃 되었습니다.");
+
     }
 }
