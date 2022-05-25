@@ -49,12 +49,17 @@ public class AccountService {
 //        account.setPassword(password);
 //    }
 
+
+    
+
     @Transactional(readOnly = true)
     public AccountResponseDto getAccountInfo(String email){
         return accountRepository.findByEmail(email)
                 .map(AccountResponseDto::of)
                 .orElseThrow(()->new RuntimeException("유저 정보가 없습니다."));
     }
+
+
 
     @Transactional(readOnly = true)
     public AccountResponseDto getMyInfo(){

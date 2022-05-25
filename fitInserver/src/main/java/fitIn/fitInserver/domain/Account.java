@@ -1,10 +1,9 @@
 package fitIn.fitInserver.domain;
 
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import fitIn.fitInserver.domain.auth.AuthProvider;
+import fitIn.fitInserver.dto.AccountRequestDto;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,35 +13,46 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Getter@Setter
-@NoArgsConstructor
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "account")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//기본 키 생성을 데이터베이스에 위임
-    @Column(name = "member_id")
+    @Column(name = "account_id")
     private Long id;
-
-    @Column(unique = true)
+    @Column
     private String email;
-
     @Column
     private String password;
-
     @Column
     private String name;
-
+    private String authId;
+    private Boolean socialCertification;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Enumerated(EnumType.STRING)
+    private AuthProvider provider;
 
 
-    @Builder
-    public Account(String name, String password, String email, Role role) {
+    public Account(String name, String email, String authId, Boolean socialCertification,AuthProvider provider, Role role) {
         this.name = name;
-        this.password = password;
         this.email = email;
+        this.authId = authId;
+        this.socialCertification = socialCertification;
+        this.provider = provider;
         this.role = role;
+    }
+
+    public void changeAccountOAuth(Long id, String name, String email, String authId, AuthProvider provider){
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.authId = authId;
+        this.provider = provider;
     }
 
 

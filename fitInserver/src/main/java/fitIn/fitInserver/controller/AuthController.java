@@ -3,8 +3,8 @@ package fitIn.fitInserver.controller;
 
 import fitIn.fitInserver.dto.AccountRequestDto;
 import fitIn.fitInserver.dto.AccountResponseDto;
-import fitIn.fitInserver.dto.TokenDto;
-import fitIn.fitInserver.dto.TokenRequestDto;
+import fitIn.fitInserver.domain.auth.TokenDto;
+import fitIn.fitInserver.domain.auth.TokenRequestDto;
 import fitIn.fitInserver.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +35,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<TokenDto>logout(@RequestBody TokenRequestDto tokenRequestDto){
-        return ResponseEntity.ok(authService.logout(tokenRequestDto));
+    public void logout(@RequestBody TokenRequestDto tokenRequestDto){
+        authService.logout(tokenRequestDto);
     }
 }

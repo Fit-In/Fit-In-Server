@@ -1,4 +1,4 @@
-package fitIn.fitInserver.dto;
+package fitIn.fitInserver.domain.auth;
 
 
 import lombok.AllArgsConstructor;
@@ -15,7 +15,6 @@ public class TokenDto {
     private String accessToken;
     private String refreshToken;
     private Long refreshTokenExpiresIn;
-
 
 
 }
