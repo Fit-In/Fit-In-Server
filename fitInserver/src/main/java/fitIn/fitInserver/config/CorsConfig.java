@@ -13,13 +13,16 @@ public class CorsConfig {//(Cross-Origin Resource Sharing,CORS) 란 다른 출�
 
     @Bean
     public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+
         CorsConfiguration config = new CorsConfiguration();
+
+        config.addAllowedOrigin("http://localhost:8080");
         config.setAllowCredentials(true);
         config.addAllowedOrigin("*");//자원 공유를 허락할 Origin을 지정할 수 있습니다, *는 모두 허용
         config.addAllowedHeader("*");//허용할 헤더 지정
         config.addAllowedMethod("*");//허용할 HTTP method를 지정할 수 있습니다.
 
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/api/**", config);
         return new CorsFilter(source);
     }

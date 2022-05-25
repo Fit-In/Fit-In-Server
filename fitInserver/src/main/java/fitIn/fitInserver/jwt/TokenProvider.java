@@ -1,6 +1,6 @@
 package fitIn.fitInserver.jwt;
 
-import fitIn.fitInserver.dto.TokenDto;
+import fitIn.fitInserver.domain.auth.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -32,7 +32,7 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 30; //30분
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 1; //30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7; //7일
 
 
@@ -44,10 +44,6 @@ public class TokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);//base64를 byte[]로 변환, byte[]로 key 생성
     }
 
-
-
-
-    //https://tansfil.tistory.com/59
     //Authentication 유저 정보를 받아서 AccessToken, RefreshToken 생성
     public TokenDto generateTokenDto(Authentication authentication){
         // 권한들 가져오기

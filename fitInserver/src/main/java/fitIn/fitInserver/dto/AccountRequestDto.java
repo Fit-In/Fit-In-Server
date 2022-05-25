@@ -2,6 +2,7 @@ package fitIn.fitInserver.dto;
 
 import fitIn.fitInserver.domain.Account;
 import fitIn.fitInserver.domain.Role;
+import fitIn.fitInserver.domain.auth.AuthProvider;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,10 +23,12 @@ public class AccountRequestDto {
 
     public Account toAccount(PasswordEncoder passwordEncoder){
         return Account.builder()
-                .name(name)
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .name(name)
+                .provider(AuthProvider.local)
                 .role(Role.ROLE_USER)
+                .socialCertification(true)
                 .build();
     }
 
