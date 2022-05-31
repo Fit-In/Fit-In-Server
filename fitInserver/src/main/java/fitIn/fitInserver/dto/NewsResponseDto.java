@@ -10,28 +10,28 @@ public class NewsResponseDto {
 
     private Long id;
 
-    private String 언론사;
+    private String press;
 
-    private String 뉴스제목;
+    private String title;
 
-    private String 본문내용;
+    private String content;
 
-    private String 카테고리;
+    private String category;
 
-    private String 이미지url;
+    private String image_url;
 
-    private String Link;
+    private String link;
 
 
     public NewsResponseDto(News entity){
 
         this.id = entity.getId();
-        this.언론사 = entity.get언론사();
-        this.뉴스제목 = entity.get뉴스제목();
-        this.본문내용 = entity.get본문내용();
-        this.카테고리 = entity.get카테고리();
-        this.이미지url = entity.get이미지url();
-        this.Link = entity.getLink();
+        this.press = entity.getPress();
+        this.title = entity.getTitle();
+        this.content = entity.getContent();
+        this.category = entity.getCategory();
+        this.image_url = entity.getImage_url();
+        this.link = entity.getLink();
     }
 
 }

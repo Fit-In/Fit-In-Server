@@ -19,19 +19,19 @@ public class News {
     private Long id;
 
     @Column
-    private String 언론사;
+    private String press;
 
     @Column(length = 1000)
-    private String 뉴스제목;
+    private String title;
 
     @Column(length=5000)
-    private String 본문내용;
+    private String content;
 
     @Column
-    private String 카테고리;
+    private String category;
 
     @Column
-    private String 이미지url;
+    private String image_url;
 
     @Column
     private String link;

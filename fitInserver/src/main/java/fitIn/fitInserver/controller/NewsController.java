@@ -47,7 +47,7 @@ public class NewsController {
             HttpHeaders header = new HttpHeaders();
             HttpEntity<?> entity = new HttpEntity<>(header);
 
-            String url = "https://ja5p2ijge9.execute-api.ap-northeast-2.amazonaws.com/include_news/news";
+            String url = "https://ja5p2ijge9.execute-api.ap-northeast-2.amazonaws.com/include_news/news_utf8";
             UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
 
             ResponseEntity<Object> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Object.class);
@@ -80,8 +80,8 @@ public class NewsController {
         return newsService.findById(id);
     }
     @GetMapping("/news")
-    public List<NewsListResponseDto> searchAllDesc(){
-        return newsService.findAllDesc();
+    public List<NewsListResponseDto> searchAllAsc(){
+        return newsService.findAllAsc();
     }
 
 
