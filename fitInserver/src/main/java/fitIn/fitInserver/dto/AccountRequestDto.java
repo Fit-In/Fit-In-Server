@@ -21,6 +21,7 @@ public class AccountRequestDto {
     private String email;
     private String password;
 
+
     public Account toAccount(PasswordEncoder passwordEncoder){
         return Account.builder()
                 .email(email)

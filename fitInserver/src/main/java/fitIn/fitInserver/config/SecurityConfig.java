@@ -61,12 +61,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {//인증 매커니즘 구성, 로그인URL,권한분리, logout URL등등 설정
         httpSecurity
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-                .cors()//.configurationSource(corsConfigurationSource())
+                .cors()
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
-                //.addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)//corsfilter 추가
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)//corsfilter 추가
 
                 .exceptionHandling()//예외처리 handler 처리
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)//유효한 자격증명을 제공하지 않고 접근하려 할때 401 Unauthorized에러를 리턴
@@ -86,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isCorsRequest).permitAll()
-                .antMatchers("/auth/**", "/oauth2/**").permitAll()//auth로 시작하는 API 모두 허용
+                .antMatchers("/auth/**", "/oauth2/**","/news/**","/api/**").permitAll()//auth로 시작하는 API 모두 허용
                 .anyRequest().authenticated().and()//나머지는 인증된 사용자만 접근할 수 있다.
                 .cors().and()
 
@@ -104,20 +104,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new JwtFilter(redisTemplate,tokenProvider),UsernamePasswordAuthenticationFilter.class);//만든 jwtfilter를 addfilterBefore로 등록했던 jwtSecurityConfig 클래스도 적용
     }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-
-        configuration.addAllowedOrigin("*");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
-    }
-
 
 }

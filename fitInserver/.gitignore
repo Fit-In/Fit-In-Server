@@ -208,5 +208,3 @@ Temporary Items
 .apdisk
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,macos
-
-/src/main/resources/application.yml

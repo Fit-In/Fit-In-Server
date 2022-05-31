@@ -5,7 +5,6 @@ import java.util.Map;
 public class KakaoOAuth2UserInfo extends OAuth2UserInfo{
     Map<String,Object> kakaoAccount;
     Map<String,Object> kakaoProfile;
-
     public KakaoOAuth2UserInfo(Map<String, Object> attributes) {
         super(attributes);
         kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
