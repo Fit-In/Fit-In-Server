@@ -11,25 +11,25 @@ import lombok.*;
 @NoArgsConstructor
 public class NewsRequestDto {
 
-    private String 언론사;
+    private String press;
 
-    private String 뉴스제목;
+    private String title;
 
-    private String 본문내용;
+    private String content;
 
-    private String 카테고리;
+    private String category;
 
-    private String 이미지url;
+    private String image_url;
 
     private String link;
 
     public News toEntity(){
         return News.builder()
-                .언론사(언론사)
-                .뉴스제목(뉴스제목)
-                .본문내용(본문내용)
-                .카테고리(카테고리)
-                .이미지url(이미지url)
+                .press(press)
+                .title(title)
+                .content(content)
+                .category(category)
+                .image_url(image_url)
                 .link(link)
                 .build();
     }

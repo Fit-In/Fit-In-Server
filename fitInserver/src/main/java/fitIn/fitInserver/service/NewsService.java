@@ -8,7 +8,6 @@ import fitIn.fitInserver.repository.NewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,8 +32,8 @@ public class NewsService {
 
 
     @Transactional(readOnly = true)
-    public List<NewsListResponseDto> findAllDesc(){
-        return newsRepository.findAllDesc().stream()
+    public List<NewsListResponseDto> findAllAsc(){
+        return newsRepository.findAllAsc().stream()
                 .map(NewsListResponseDto::new)
                 .collect(Collectors.toList());
     }
