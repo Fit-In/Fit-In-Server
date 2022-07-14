@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public class NewsResponseDto {
 
-
     private Long id;
 
     private String press;

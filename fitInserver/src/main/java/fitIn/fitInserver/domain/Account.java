@@ -30,6 +30,7 @@ public class Account {
     private String password;
     @Column
     private String name;
+
     private String authId;
     private Boolean socialCertification;
     @Enumerated(EnumType.STRING)

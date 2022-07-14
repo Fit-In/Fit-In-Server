@@ -27,4 +27,6 @@ public class AccountController {
         return ResponseEntity.ok(accountService.getAccountInfo(email));
     }
 
+
+
 }
