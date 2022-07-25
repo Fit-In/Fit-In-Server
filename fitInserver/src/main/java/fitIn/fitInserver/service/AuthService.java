@@ -138,6 +138,7 @@ public class AuthService {
     }
 
 
+    @Transactional
     public boolean checkEmailDuplicate(String email){
         return accountRepository.existsByEmail(email);
     }

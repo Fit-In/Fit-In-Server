@@ -33,14 +33,10 @@ public class AuthController {
         }
         return authService.signup(accountRequestDto);
     }
-    @GetMapping("/exists")
+    @GetMapping("/exists/{email}")
     public ResponseEntity<Boolean> checkEmailDuplicate(@PathVariable String email){
         return ResponseEntity.ok(authService.checkEmailDuplicate(email));
     }
-
-
-
-
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated AccountRequestDto accountRequestDto,Errors errors){
@@ -75,8 +71,5 @@ public class AuthController {
     public ResponseEntity<?> findPassword(@RequestBody AccountRequestDto accountRequestDto){
         return ResponseEntity.ok(authService.findPassword(accountRequestDto));
     }
-
-
-
 
 }
