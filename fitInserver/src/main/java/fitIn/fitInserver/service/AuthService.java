@@ -3,26 +3,32 @@ package fitIn.fitInserver.service;
 
 import fitIn.fitInserver.domain.Account;
 import fitIn.fitInserver.dto.AccountRequestDto;
-import fitIn.fitInserver.dto.AccountResponseDto;
 import fitIn.fitInserver.domain.auth.TokenDto;
 import fitIn.fitInserver.domain.auth.TokenRequestDto;
+import fitIn.fitInserver.dto.Response;
 import fitIn.fitInserver.jwt.TokenProvider;
 import fitIn.fitInserver.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -31,20 +37,29 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
+    private final Response response;
 
     private final Logger logger = LoggerFactory.getLogger(AuthService.class);
     @Transactional//회원가입해서 db에 저장하는 메서드
-    public AccountResponseDto signup(AccountRequestDto accountRequestDto){
+    public ResponseEntity<?> signup(AccountRequestDto accountRequestDto){
         if(accountRepository.existsByEmail(accountRequestDto.getEmail())){
-            throw new RuntimeException("이미 가입되어 있는 유저입니다");
+            return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
         Account account = accountRequestDto.toAccount(passwordEncoder);//요청받아서 들어온 정보를 암호화
-        return AccountResponseDto.of(accountRepository.save(account));//DB에 저장
+        accountRepository.save(account);//DB에 저장
+        return response.success("회원가입에 성공했습니다.");
     }
 
     //jwt검증후 로그인 메서드
     @Transactional
-    public TokenDto login(AccountRequestDto accountRequestDto){
+    public ResponseEntity<?> login(AccountRequestDto accountRequestDto){
+
+
+        if (accountRepository.findByEmail(accountRequestDto.getEmail()).orElse(null) == null) {
+            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
+
         // 첫 번째로 클라이언트에서 넘겨받은 ID/PW 를 기반으로 AuthenticationToken 생성한다
         // 이는 아직 인증 완료된 객체가 아니며 두 번째 단계인 AuthenticationManger에서 authenticate메소드를 통해 검증을 통과해야만 JWT토큰이 생성된다
         UsernamePasswordAuthenticationToken authenticationToken = accountRequestDto.toAuthentication();//Authentication는 authenticate하나만 구현 된 인터페이스, 내부 수행 검증 과정은 CustomUserDetailsService에서 구현
@@ -57,12 +72,12 @@ public class AuthService {
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);//AccessToken, RefreshToken생성
 
-
         //4.RefreshToken Redis 저장(expirationTime 설정을 통해서 자동으로 삭제)
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), tokenDto.getRefreshToken(), tokenDto.getRefreshTokenExpiresIn(), TimeUnit.MILLISECONDS);
         // 5. 토큰 발급
-        return tokenDto;//생성된 토큰 정보 클라이언트에 전달
+
+        return response.success(tokenDto, "로그인에 성공했습니다.", HttpStatus.OK);
     }
 
 
@@ -70,7 +85,7 @@ public class AuthService {
 
     //토큰 재발급 메서드
     @Transactional
-    public TokenDto reissue(TokenRequestDto tokenRequestDto){//TokenRequestDto에서 AccessToken+ RefreshToken을 받아옴
+    public ResponseEntity<?> reissue(TokenRequestDto tokenRequestDto){//TokenRequestDto에서 AccessToken+ RefreshToken을 받아옴
         //1. Refresh Token 검증
         if(!tokenProvider.validateToken(tokenRequestDto.getRefreshToken())){
             throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");//RefreshToken 만료여부 먼저 검사
@@ -81,10 +96,10 @@ public class AuthService {
         //// 3. Redis 에서 User email 을 기반으로 저장된 Refresh Token 값을 가져옵니다.
         String refreshToken = (String)redisTemplate.opsForValue().get("RT:" + authentication.getName());
         if(ObjectUtils.isEmpty(refreshToken)){
-            throw new RuntimeException("로그아웃 된 사용자 입니다.");
+            return response.fail("로그아웃 된 사용자 입니다.", HttpStatus.BAD_REQUEST);
         }
         if(!refreshToken.equals(tokenRequestDto.getRefreshToken())){
-            throw new RuntimeException("토큰의 유저 정보가 일치하지 않습니다.");
+            return response.fail("토큰의 유저 정보가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
         //4. 새로운 토큰 생성
          TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
@@ -94,13 +109,13 @@ public class AuthService {
                 .set("RT:" + authentication.getName(), tokenDto.getRefreshToken(),tokenDto.getRefreshTokenExpiresIn(),TimeUnit.MILLISECONDS);
 
         // 토큰 발급
-        return tokenDto;//client에 새로운 토큰 전달
+        return response.success(tokenDto, "Token 정보가 갱신되었습니다.", HttpStatus.OK);
 
     }
 
 
     @Transactional
-    public void logout(TokenRequestDto tokenRequestDto){
+    public ResponseEntity<?> logout(TokenRequestDto tokenRequestDto){
         //1. AccessToken 검증
         if(!tokenProvider.validateToken(tokenRequestDto.getAccessToken())){
             throw new RuntimeException("잘못된 요청입니다.");
@@ -117,7 +132,51 @@ public class AuthService {
         Long expiration = tokenProvider.getExpiration(tokenRequestDto.getAccessToken());
         redisTemplate.opsForValue()
                 .set(tokenRequestDto.getAccessToken(),"logout",expiration,TimeUnit.MILLISECONDS);
-        logger.info("로그아웃 성공");
 
+        return response.success("로그아웃 되었습니다.");
+
+    }
+
+
+    public boolean checkEmailDuplicate(String email){
+        return accountRepository.existsByEmail(email);
+    }
+
+    public String findEmail(AccountRequestDto accountRequestDto) {
+        String email = accountRepository.findByNameAndPhone(accountRequestDto.getName(), accountRequestDto.getPhone())
+                .orElseThrow(() -> new UsernameNotFoundException("사용자 정보가 없습니다.")).getEmail();
+        return email;
+    }
+
+
+    public String findPassword(AccountRequestDto accountRequestDto){
+        Account account = accountRepository.findByEmailAndNameAndPhone(accountRequestDto.getEmail(), accountRequestDto.getName(), accountRequestDto.getPhone())
+                .orElseThrow(()->new UsernameNotFoundException("사용자 정보가 없습니다."));
+        String tempPassword = randomPw();
+
+        account.updatePassword(passwordEncoder.encode(tempPassword));
+        accountRepository.save(account);
+        log.info("임시 비밀번호 발급. new Password={}",tempPassword);
+        return tempPassword;
+
+    }
+
+
+    private String randomPw() {
+        char[] pwCollectionSpCha = new char[]{'!', '@', '#', '$', '%', '^', '&', '*', '(', ')'};
+        char[] pwCollectionNum = new char[]{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',};
+        char[] pwCollectionAll = new char[]{'1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                '!', '@', '#', '$', '%', '^', '&', '*', '(', ')'};
+        return getRandPw(1, pwCollectionSpCha) + getRandPw(8, pwCollectionAll) + getRandPw(1, pwCollectionNum);
+    }
+    private String getRandPw(int size, char[] pwCollection) {
+        StringBuilder ranPw = new StringBuilder();
+        for (int i = 0; i < size; i++) {
+            int selectRandomPw = (int) (Math.random() * (pwCollection.length));
+            ranPw.append(pwCollection[selectRandomPw]);
+        }
+        return ranPw.toString();
     }
 }
