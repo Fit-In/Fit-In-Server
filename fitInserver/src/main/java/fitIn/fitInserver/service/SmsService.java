@@ -42,7 +42,7 @@ public class SmsService {
         params.put("type", "sms");
         params.put("text", "인증번호는 [" + numStr + "] 입니다.");
 
-        coolsms.send(params); // 메시지 전송
+        //coolsms.send(params); // 메시지 전송
 
 
         return numStr;
