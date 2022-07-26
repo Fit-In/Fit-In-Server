@@ -38,6 +38,7 @@ public class AuthService {
     private final TokenProvider tokenProvider;
     private final RedisTemplate redisTemplate;
     private final Response response;
+    private final MailService mailService;
 
     private final Logger logger = LoggerFactory.getLogger(AuthService.class);
     @Transactional//회원가입해서 db에 저장하는 메서드
@@ -59,7 +60,6 @@ public class AuthService {
             return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
-
         // 첫 번째로 클라이언트에서 넘겨받은 ID/PW 를 기반으로 AuthenticationToken 생성한다
         // 이는 아직 인증 완료된 객체가 아니며 두 번째 단계인 AuthenticationManger에서 authenticate메소드를 통해 검증을 통과해야만 JWT토큰이 생성된다
         UsernamePasswordAuthenticationToken authenticationToken = accountRequestDto.toAuthentication();//Authentication는 authenticate하나만 구현 된 인터페이스, 내부 수행 검증 과정은 CustomUserDetailsService에서 구현
@@ -79,8 +79,6 @@ public class AuthService {
 
         return response.success(tokenDto, "로그인에 성공했습니다.", HttpStatus.OK);
     }
-
-
 
 
     //토큰 재발급 메서드
@@ -154,13 +152,16 @@ public class AuthService {
         Account account = accountRepository.findByEmailAndNameAndPhone(accountRequestDto.getEmail(), accountRequestDto.getName(), accountRequestDto.getPhone())
                 .orElseThrow(()->new UsernameNotFoundException("사용자 정보가 없습니다."));
         String tempPassword = randomPw();
-
         account.updatePassword(passwordEncoder.encode(tempPassword));
+
+        mailService.sendEmail(accountRequestDto.getEmail(),"HANDIT 임시비밀번호 발급","인증번호는 "+tempPassword+"입니다.");
         accountRepository.save(account);
         log.info("임시 비밀번호 발급. new Password={}",tempPassword);
         return tempPassword;
 
     }
+
+
 
 
     private String randomPw() {

@@ -36,7 +36,7 @@ public class Account {
     private String name;
 
     @Column
-    private Long phone;
+    private String phone;
 
     private String authId;
     private Boolean socialCertification;
