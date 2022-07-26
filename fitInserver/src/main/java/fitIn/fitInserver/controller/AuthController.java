@@ -2,11 +2,8 @@ package fitIn.fitInserver.controller;
 
 
 import fitIn.fitInserver.dto.AccountRequestDto;
-import fitIn.fitInserver.dto.AccountResponseDto;
-import fitIn.fitInserver.domain.auth.TokenDto;
 import fitIn.fitInserver.domain.auth.TokenRequestDto;
 import fitIn.fitInserver.dto.Response;
-import fitIn.fitInserver.service.AccountService;
 import fitIn.fitInserver.service.AuthService;
 import fitIn.fitInserver.util.Helper;
 import lombok.RequiredArgsConstructor;
@@ -15,8 +12,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 //update account set phone = 01030992325 where phone is null
 @RestController
@@ -37,6 +32,7 @@ public class AuthController {
     public ResponseEntity<Boolean> checkEmailDuplicate(@PathVariable String email){
         return ResponseEntity.ok(authService.checkEmailDuplicate(email));
     }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated AccountRequestDto accountRequestDto,Errors errors){
