@@ -1,4 +1,4 @@
-package fitIn.fitInserver.dto;
+package fitIn.fitInserver.dto.Request;
 
 
 import lombok.AllArgsConstructor;

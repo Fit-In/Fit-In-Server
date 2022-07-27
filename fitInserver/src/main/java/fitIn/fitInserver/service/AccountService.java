@@ -1,7 +1,6 @@
 package fitIn.fitInserver.service;
 
 
-import fitIn.fitInserver.dto.AccountRequestDto;
 import fitIn.fitInserver.dto.AccountResponseDto;
 import fitIn.fitInserver.repository.AccountRepository;
 import fitIn.fitInserver.util.SecurityUtil;

@@ -1,7 +1,6 @@
 package fitIn.fitInserver.controller;
 
-import fitIn.fitInserver.dto.AccountRequestDto;
-import fitIn.fitInserver.dto.SmsRequestDto;
+import fitIn.fitInserver.dto.Request.SmsRequestDto;
 import fitIn.fitInserver.service.SmsService;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
