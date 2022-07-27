@@ -1,4 +1,4 @@
-package fitIn.fitInserver.dto;
+package fitIn.fitInserver.dto.Request;
 
 import fitIn.fitInserver.domain.Account;
 import fitIn.fitInserver.domain.Role;
@@ -11,13 +11,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
-import java.util.Collections;
 
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AccountRequestDto {
+public class SignupRequestDto {
 
 
     @NotEmpty(message = "이름은 필수 입력값입니다.")
@@ -48,7 +47,5 @@ public class AccountRequestDto {
                 .build();
     }
 
-    public UsernamePasswordAuthenticationToken toAuthentication(){
-        return new UsernamePasswordAuthenticationToken(email, password);
-    }
+
 }

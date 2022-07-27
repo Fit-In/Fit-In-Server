@@ -54,7 +54,7 @@ public class NewsController {
 
             ObjectMapper mapper = new ObjectMapper();
             mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+            
             jsonInString = mapper.writeValueAsString(resultMap.getBody());
             List<NewsRequestDto> Dtos = Arrays.asList(mapper.readValue(jsonInString, NewsRequestDto[].class));
             Dtos.forEach(d -> {

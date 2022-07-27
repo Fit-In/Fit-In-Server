@@ -2,7 +2,10 @@ package fitIn.fitInserver.service;
 
 
 import fitIn.fitInserver.domain.Account;
-import fitIn.fitInserver.dto.AccountRequestDto;
+import fitIn.fitInserver.dto.Request.FindEmailRequestDto;
+import fitIn.fitInserver.dto.Request.FindPasswordRequestDto;
+import fitIn.fitInserver.dto.Request.LoginRequestDto;
+import fitIn.fitInserver.dto.Request.SignupRequestDto;
 import fitIn.fitInserver.domain.auth.TokenDto;
 import fitIn.fitInserver.domain.auth.TokenRequestDto;
 import fitIn.fitInserver.dto.Response;
@@ -24,7 +27,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 
@@ -42,7 +44,7 @@ public class AuthService {
 
     private final Logger logger = LoggerFactory.getLogger(AuthService.class);
     @Transactional//회원가입해서 db에 저장하는 메서드
-    public ResponseEntity<?> signup(AccountRequestDto accountRequestDto){
+    public ResponseEntity<?> signup(SignupRequestDto accountRequestDto){
         if(accountRepository.existsByEmail(accountRequestDto.getEmail())){
             return response.fail("이미 회원가입된 이메일입니다.", HttpStatus.BAD_REQUEST);
         }
@@ -53,16 +55,16 @@ public class AuthService {
 
     //jwt검증후 로그인 메서드
     @Transactional
-    public ResponseEntity<?> login(AccountRequestDto accountRequestDto){
+    public ResponseEntity<?> login(LoginRequestDto loginRequestDto){
 
 
-        if (accountRepository.findByEmail(accountRequestDto.getEmail()).orElse(null) == null) {
+        if (accountRepository.findByEmail(loginRequestDto.getEmail()).orElse(null) == null) {
             return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
         }
 
         // 첫 번째로 클라이언트에서 넘겨받은 ID/PW 를 기반으로 AuthenticationToken 생성한다
         // 이는 아직 인증 완료된 객체가 아니며 두 번째 단계인 AuthenticationManger에서 authenticate메소드를 통해 검증을 통과해야만 JWT토큰이 생성된다
-        UsernamePasswordAuthenticationToken authenticationToken = accountRequestDto.toAuthentication();//Authentication는 authenticate하나만 구현 된 인터페이스, 내부 수행 검증 과정은 CustomUserDetailsService에서 구현
+        UsernamePasswordAuthenticationToken authenticationToken = loginRequestDto.toAuthentication();//Authentication는 authenticate하나만 구현 된 인터페이스, 내부 수행 검증 과정은 CustomUserDetailsService에서 구현
 
         // 2. 실제로 검증 (사용자 비밀번호 체크) 이 이루어지는 부분
         //    authenticate 메서드가 실행이 될 때 CustomUserDetailsService 에서 만들었던 loadUserByUsername 메서드가 실행됨
@@ -141,20 +143,20 @@ public class AuthService {
         return accountRepository.existsByEmail(email);
     }
 
-    public String findEmail(AccountRequestDto accountRequestDto) {
-        String email = accountRepository.findByNameAndPhone(accountRequestDto.getName(), accountRequestDto.getPhone())
+    public String findEmail(FindEmailRequestDto findEmailRequestDto) {
+        String email = accountRepository.findByNameAndPhone(findEmailRequestDto.getName(), findEmailRequestDto.getPhone())
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 정보가 없습니다.")).getEmail();
         return email;
     }
 
 
-    public String findPassword(AccountRequestDto accountRequestDto){
-        Account account = accountRepository.findByEmailAndNameAndPhone(accountRequestDto.getEmail(), accountRequestDto.getName(), accountRequestDto.getPhone())
+    public String findPassword(FindPasswordRequestDto findPasswordRequestDto){
+        Account account = accountRepository.findByEmailAndNameAndPhone(findPasswordRequestDto.getEmail(), findPasswordRequestDto.getName(), findPasswordRequestDto.getPhone())
                 .orElseThrow(()->new UsernameNotFoundException("사용자 정보가 없습니다."));
         String tempPassword = randomPw();
         account.updatePassword(passwordEncoder.encode(tempPassword));
 
-        mailService.sendEmail(accountRequestDto.getEmail(),"HANDIT 임시비밀번호 발급","인증번호는 "+tempPassword+"입니다.");
+        mailService.sendEmail(findPasswordRequestDto.getEmail(),"HANDIT 임시비밀번호 발급","인증번호는 "+tempPassword+"입니다.");
         accountRepository.save(account);
         log.info("임시 비밀번호 발급. new Password={}",tempPassword);
         return tempPassword;

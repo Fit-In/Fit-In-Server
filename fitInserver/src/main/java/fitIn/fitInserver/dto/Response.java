@@ -35,6 +35,8 @@ public class Response {
         return ResponseEntity.ok(body);
     }
 
+
+
     /**
      * <p> 메세지만 가진 성공 응답을 반환한다.</p>
      * <pre>
