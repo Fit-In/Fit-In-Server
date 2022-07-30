@@ -63,12 +63,12 @@ public class AuthController {
 
     @PostMapping("/find/email")
     public ResponseEntity<?> findEmail(@RequestBody FindEmailRequestDto findEmailRequestDto){
-        return ResponseEntity.ok(authService.findEmail(findEmailRequestDto));
+        return authService.findEmail(findEmailRequestDto);
     }
 
     @PostMapping("find/password")
     public ResponseEntity<?> findPassword(@RequestBody FindPasswordRequestDto findPasswordRequestDto){
-        return ResponseEntity.ok(authService.findPassword(findPasswordRequestDto));
+        return authService.findPassword(findPasswordRequestDto);
     }
 
 }

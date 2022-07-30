@@ -143,14 +143,22 @@ public class AuthService {
         return accountRepository.existsByEmail(email);
     }
 
-    public String findEmail(FindEmailRequestDto findEmailRequestDto) {
+    public ResponseEntity<?> findEmail(FindEmailRequestDto findEmailRequestDto) {
+        if (accountRepository.findByNameAndPhone(findEmailRequestDto.getName(), findEmailRequestDto.getPhone()).orElse(null) == null){
+            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
+
         String email = accountRepository.findByNameAndPhone(findEmailRequestDto.getName(), findEmailRequestDto.getPhone())
                 .orElseThrow(() -> new UsernameNotFoundException("사용자 정보가 없습니다.")).getEmail();
-        return email;
+
+        return response.success(email, "이메일 찾기를 성공하였습니다.", HttpStatus.OK);
     }
 
 
-    public String findPassword(FindPasswordRequestDto findPasswordRequestDto){
+    public ResponseEntity<?> findPassword(FindPasswordRequestDto findPasswordRequestDto){
+        if (accountRepository.findByEmailAndNameAndPhone(findPasswordRequestDto.getEmail(), findPasswordRequestDto.getName(), findPasswordRequestDto.getPhone()).orElse(null) == null) {
+            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+        }
         Account account = accountRepository.findByEmailAndNameAndPhone(findPasswordRequestDto.getEmail(), findPasswordRequestDto.getName(), findPasswordRequestDto.getPhone())
                 .orElseThrow(()->new UsernameNotFoundException("사용자 정보가 없습니다."));
         String tempPassword = randomPw();
@@ -159,7 +167,8 @@ public class AuthService {
         mailService.sendEmail(findPasswordRequestDto.getEmail(),"HANDIT 임시비밀번호 발급","인증번호는 "+tempPassword+"입니다.");
         accountRepository.save(account);
         log.info("임시 비밀번호 발급. new Password={}",tempPassword);
-        return tempPassword;
+
+        return response.success(tempPassword, "임시 비밀번호가 발급되었습니다.", HttpStatus.OK);
 
     }
 
