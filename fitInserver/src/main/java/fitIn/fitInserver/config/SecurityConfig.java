@@ -86,7 +86,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isCorsRequest).permitAll()
-                .antMatchers("/auth/**", "/oauth2/**","/news/**","/api/**","/sms/**").permitAll()//auth로 시작하는 API 모두 허용
+                .antMatchers("/auth/**", "/oauth2/**","/news/**","/api/**","/sms/**","/recruit/**").permitAll()//auth로 시작하는 API 모두 허용
                 .anyRequest().authenticated().and()//나머지는 인증된 사용자만 접근할 수 있다.
                 .cors().and()
 

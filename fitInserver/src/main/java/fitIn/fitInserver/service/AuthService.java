@@ -53,6 +53,8 @@ public class AuthService {
         return response.success("회원가입에 성공했습니다.");
     }
 
+
+
     //jwt검증후 로그인 메서드
     @Transactional
     public ResponseEntity<?> login(LoginRequestDto loginRequestDto){
@@ -137,7 +139,6 @@ public class AuthService {
 
     }
 
-
     @Transactional
     public boolean checkEmailDuplicate(String email){
         return accountRepository.existsByEmail(email);
@@ -171,9 +172,6 @@ public class AuthService {
         return response.success(tempPassword, "임시 비밀번호가 발급되었습니다.", HttpStatus.OK);
 
     }
-
-
-
 
     private String randomPw() {
         char[] pwCollectionSpCha = new char[]{'!', '@', '#', '$', '%', '^', '&', '*', '(', ')'};
