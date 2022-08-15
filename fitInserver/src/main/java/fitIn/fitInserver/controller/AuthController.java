@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 //update account set phone = 01030992325 where phone is null
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
