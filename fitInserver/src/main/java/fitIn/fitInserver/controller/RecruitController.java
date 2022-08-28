@@ -2,7 +2,7 @@ package fitIn.fitInserver.controller;
 
 
 import fitIn.fitInserver.dto.*;
-import fitIn.fitInserver.service.CallDataService;
+import fitIn.fitInserver.service.CallRecruitService;
 import fitIn.fitInserver.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecruitController {
 
-    private final CallDataService callDataService;
+    private final CallRecruitService callRecruitService;
     private final RecruitService recruitService;
 
     String baemin = "https://ja5p2ijge9.execute-api.ap-northeast-2.amazonaws.com/GET/get_baemin";
@@ -25,9 +25,9 @@ public class RecruitController {
     @GetMapping("recruit/save")
     public String callAPI(){
         String Data="";
-        Data = Data.concat(callDataService.call(baemin));
-        Data = Data.concat(callDataService.call(kakao));
-        Data = Data.concat(callDataService.call(carrot));
+        Data = Data.concat(callRecruitService.call(baemin));
+        Data = Data.concat(callRecruitService.call(kakao));
+        Data = Data.concat(callRecruitService.call(carrot));
 
         return Data;
     }

@@ -3,7 +3,6 @@ package fitIn.fitInserver.service;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fitIn.fitInserver.dto.RecruitRequestDto;
-import fitIn.fitInserver.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,7 +23,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CallDataService {
+public class CallRecruitService {
 
     private final RecruitService recruitService;
 
