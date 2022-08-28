@@ -3,7 +3,7 @@ package fitIn.fitInserver.controller;
 
 import fitIn.fitInserver.dto.NewsListResponseDto;
 import fitIn.fitInserver.dto.NewsResponseDto;
-import fitIn.fitInserver.service.CallDataService;
+import fitIn.fitInserver.service.CallNewsService;
 import fitIn.fitInserver.service.NewsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +16,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NewsController {
 
-    private final CallDataService callDataService;
+    private final CallNewsService callNewsService;
     private final NewsService newsService;
 
     String news = "https://ja5p2ijge9.execute-api.ap-northeast-2.amazonaws.com/include_news/news_utf8";
     @GetMapping("news/save")
     public String callAPI(){
         String Data="";
-        Data = Data.concat(callDataService.call(news));
+        Data = Data.concat(callNewsService.call(news));
         return Data;
     }
 
