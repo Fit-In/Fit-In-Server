@@ -1,10 +1,14 @@
 package fitIn.fitInserver.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import fitIn.fitInserver.domain.auth.AuthProvider;
 import lombok.*;
 
 import javax.persistence.*;
+import java.awt.print.Book;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -37,6 +41,12 @@ public class Account {
     private Role role;
     @Enumerated(EnumType.STRING)
     private AuthProvider provider;
+
+
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
+    private List<Bookmark> bookmark = new ArrayList<>();
+
+
 
 
 

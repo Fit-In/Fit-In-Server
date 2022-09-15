@@ -1,6 +1,7 @@
 package fitIn.fitInserver.dto;
 
 import fitIn.fitInserver.domain.News;
+import fitIn.fitInserver.domain.News_Save;
 import lombok.Getter;
 
 
@@ -33,4 +34,14 @@ public class NewsResponseDto {
         this.link = entity.getLink();
     }
 
+    public NewsResponseDto(News_Save entity){
+
+        this.id = entity.getId();
+        this.press = entity.getPress();
+        this.title = entity.getTitle();
+        this.content = entity.getContent();
+        this.category = entity.getCategory();
+        this.image_url = entity.getImage_url();
+        this.link = entity.getLink();
+    }
 }

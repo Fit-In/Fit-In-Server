@@ -1,22 +1,19 @@
 package fitIn.fitInserver.domain;
 
-
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 
 @Entity
-@Getter
+@DiscriminatorValue("N")
+@Getter @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "news")
-public class News {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//기본 키 생성을 데이터베이스에 위임
-    @Column(name = "news_id")
-    private Long id;
+public class News_Save extends Save {
 
     @Column
     private String press;

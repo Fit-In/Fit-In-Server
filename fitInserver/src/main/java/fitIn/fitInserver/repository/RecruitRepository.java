@@ -12,4 +12,6 @@ public interface RecruitRepository extends JpaRepository<Recruitment, Long> {
 
     @Query("SELECT n FROM Recruitment n ORDER BY n.id ASC")
     List<Recruitment> findAllAsc();
+
+    boolean existsByPosition(String Position);
 }
