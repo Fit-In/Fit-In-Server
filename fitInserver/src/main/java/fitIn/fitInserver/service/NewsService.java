@@ -19,8 +19,14 @@ public class NewsService {
     private final NewsRepository newsRepository;
 
     @Transactional
-    public Long save(NewsRequestDto newsRequestDto){//넘어온 Dto를
-        return newsRepository.save(newsRequestDto.toEntity()).getId();//엔티티로 바꿔서 레포지토리에 저장해됨
+    public void save(NewsRequestDto newsRequestDto){//넘어온 Dto를
+
+        if(newsRepository.existsByTitle(newsRequestDto.getTitle())){
+            System.out.println("이미 존재하는 뉴스입니다.");
+        }
+        else {
+            newsRepository.save(newsRequestDto.toEntity());//엔티티로 바꿔서 레포지토리에 저장해됨
+        }
     }
 
 

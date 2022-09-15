@@ -1,23 +1,18 @@
 package fitIn.fitInserver.domain;
 
-
 import lombok.*;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 @Entity
-@Getter
+@DiscriminatorValue("R")
+@Getter @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "recruitment")
-public class Recruitment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//기본 키 생성을 데이터베이스에 위임
-    @Column(name = "recruitment_id")
-    private Long id;
-
+public class Recruit_Save extends Save {
     @Column
     private String company_name;
 
@@ -41,4 +36,5 @@ public class Recruitment {
 
     @Column(length=5000)
     private String specific_info;
+
 }

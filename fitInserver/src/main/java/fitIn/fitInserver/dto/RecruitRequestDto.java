@@ -1,18 +1,17 @@
 package fitIn.fitInserver.dto;
 
 
-import fitIn.fitInserver.domain.News;
+import fitIn.fitInserver.domain.Recruit_Save;
 import fitIn.fitInserver.domain.Recruitment;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+
+import lombok.*;
 
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RecruitRequestDto {
 
 
@@ -43,5 +42,21 @@ public class RecruitRequestDto {
                 .url_link(url_link)
                 .specific_info(specific_info)
                 .build();
+    }
+
+
+    public Recruit_Save toRecruit_Save() {
+        return Recruit_Save.builder()
+                .company_name(company_name)
+                .position(position)
+                .tag(tag)
+                .career(career)
+                .recruitment_type(recruitment_type)
+                .recruitment_period(recruitment_period)
+                .url_link(url_link)
+                .specific_info(specific_info)
+                .build();
+
+
     }
 }
