@@ -37,7 +37,6 @@ public class AuthController {
         return ResponseEntity.ok(authService.checkEmailDuplicate(email));
     }
 
-
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated LoginRequestDto loginRequestDto, Errors errors){
         if(errors.hasErrors()){
@@ -45,6 +44,7 @@ public class AuthController {
         }
         return authService.login(loginRequestDto);
     }
+
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(@RequestBody @Validated TokenRequestDto tokenRequestDto,Errors errors){
         if(errors.hasErrors()) {

@@ -1,14 +1,17 @@
 package fitIn.fitInserver.service;
 
 
+import fitIn.fitInserver.domain.Account;
 import fitIn.fitInserver.domain.News_Save;
 import fitIn.fitInserver.domain.Recruit_Save;
 import fitIn.fitInserver.domain.Save;
 import fitIn.fitInserver.dto.NewsResponseDto;
 import fitIn.fitInserver.dto.RecruitResponseDto;
+import fitIn.fitInserver.dto.Request.SignupRequestDto;
 import fitIn.fitInserver.dto.Response;
 import fitIn.fitInserver.repository.SaveRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +30,7 @@ public class SaveService {
     @Transactional
     public ResponseEntity<?> saveSave(Save save){
             Long saveId= saveRepository.save(save).getId();
-        return response.success(saveId);
+        return response.success(saveId,"북마크에 데이터를 저장했습니다.",HttpStatus.OK);
     }
     public List<Save> findRecruit(){
         return saveRepository.findAll();
@@ -43,4 +46,8 @@ public class SaveService {
                 .orElseThrow(()->new IllegalArgumentException("해당 뉴가가 없습니다. id="+id));
         return new NewsResponseDto(news_save);
     }
+
+
 }
+
+
