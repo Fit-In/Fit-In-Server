@@ -44,8 +44,8 @@ public class BookmarkService {
         return ResponseEntity.ok("북마크 추가 완료");
     }
 
-    public List<Bookmark> findBookmarks(BookmarkRequestDto bookmarkRequestDto) {
-        return bookmarkQueryRepository.findAll(bookmarkRequestDto.getAccountEmail());
+    public List<Bookmark> findBookmarks(String email) {
+        return bookmarkQueryRepository.findAll(email);
     }
 
     public Bookmark findBookmark(Long bookmarkId) {
