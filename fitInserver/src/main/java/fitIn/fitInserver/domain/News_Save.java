@@ -2,9 +2,7 @@ package fitIn.fitInserver.domain;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 
 @Entity
@@ -25,11 +23,17 @@ public class News_Save extends Save {
     private String content;
 
     @Column
+    private String keyword;
+
+    @Column
     private String category;
 
     @Column
-    private String image_url;
+    private String image_link;
 
     @Column
-    private String link;
+    private String url_link;
+
+    @Column
+    private String time;
 }
