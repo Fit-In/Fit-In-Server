@@ -19,7 +19,7 @@ public class NewsController {
     private final CallNewsService callNewsService;
     private final NewsService newsService;
 
-    String news = "https://ja5p2ijge9.execute-api.ap-northeast-2.amazonaws.com/include_news/news_utf8";
+    String news = "https://ja5p2ijge9.execute-api.ap-northeast-2.amazonaws.com/GET/get_news2";
     @GetMapping("news/save")
     public String callAPI(){
         String Data="";

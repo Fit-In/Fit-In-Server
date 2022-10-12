@@ -24,15 +24,22 @@ public class News {
     @Column(length = 1000)
     private String title;
 
-    @Column(length=5000)
+    @Column(length=10000)
     private String content;
+
+    @Column
+    private String keyword;
 
     @Column
     private String category;
 
     @Column
-    private String image_url;
+    private String image_link;
 
     @Column
-    private String link;
+    private String url_link;
+
+    @Column
+    private String time;
+
 }

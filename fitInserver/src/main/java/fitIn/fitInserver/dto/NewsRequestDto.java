@@ -5,6 +5,11 @@ import fitIn.fitInserver.domain.News;
 import fitIn.fitInserver.domain.News_Save;
 import lombok.*;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 
 @Getter
 @Setter
@@ -20,9 +25,15 @@ public class NewsRequestDto {
 
     private String category;
 
-    private String image_url;
+    private String image_link;
 
     private String link;
+
+    private String keyword;
+
+    private String url_link;
+
+    private String time;
 
     public News toEntity(){
         return News.builder()
@@ -30,8 +41,10 @@ public class NewsRequestDto {
                 .title(title)
                 .content(content)
                 .category(category)
-                .image_url(image_url)
-                .link(link)
+                .image_link(image_link)
+                .url_link(url_link)
+                .keyword(keyword)
+                .time(time)
                 .build();
     }
 
@@ -41,8 +54,10 @@ public class NewsRequestDto {
                 .title(title)
                 .content(content)
                 .category(category)
-                .image_url(image_url)
-                .link(link)
+                .image_link(image_link)
+                .url_link(url_link)
+                .keyword(keyword)
+                .time(time)
                 .build();
     }
 }
