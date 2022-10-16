@@ -15,4 +15,10 @@ public interface SaveRepository extends JpaRepository<Save, Long> {
 
     Optional<Save> findById(Long id);
 
+    boolean existsByTitle(String Title);
+
+    boolean existsByPosition(String Title);
+
+    boolean existsById(Long id);
+
 }

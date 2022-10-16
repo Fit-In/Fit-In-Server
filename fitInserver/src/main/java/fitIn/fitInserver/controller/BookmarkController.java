@@ -4,6 +4,7 @@ package fitIn.fitInserver.controller;
 import fitIn.fitInserver.domain.Bookmark;
 import fitIn.fitInserver.dto.BookmarkRequestDto;
 import fitIn.fitInserver.dto.BookmarkResponseDto;
+import fitIn.fitInserver.dto.BookmarkSaveResponseDto;
 import fitIn.fitInserver.dto.RecruitResponseDto;
 import fitIn.fitInserver.repository.BookmarkQueryRepository;
 import fitIn.fitInserver.service.AccountService;
@@ -33,10 +34,13 @@ public class BookmarkController {
     {
         return bookmarkService.bookmarkCreate(bookmarkRequestDto);
     }
+
+
 //    @GetMapping("/bookmark/list")
 //    public List<Bookmark> BookmarkList(@RequestBody BookmarkRequestDto bookmarkRequestDto){
 //        return bookmarkService.findBookmarks(bookmarkRequestDto);
 //    }
+//
     @GetMapping("/bookmark/list/{email}")
     public List<Bookmark> BookmarkList(@PathVariable String email){
         return bookmarkService.findBookmarks(email);
@@ -50,7 +54,7 @@ public class BookmarkController {
     }
 
     @PostMapping("bookmark/{bookmarkId}")
-    public Bookmark findBookmark(@PathVariable("bookmarkId") Long bookmarkId){
+    public List<BookmarkSaveResponseDto> findBookmark(@PathVariable("bookmarkId") Long bookmarkId){
         return bookmarkService.findBookmark(bookmarkId);
     }
 }
