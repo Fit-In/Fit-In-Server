@@ -4,13 +4,11 @@ import fitIn.fitInserver.domain.Bookmark;
 import fitIn.fitInserver.dto.BookmarkResponseDto;
 import fitIn.fitInserver.dto.BookmarkSaveResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.awt.print.Book;
 import java.util.List;
 
 @Repository
@@ -32,6 +30,7 @@ public class BookmarkQueryRepository {
         return result;
     }
 
+
     private List<BookmarkResponseDto> findBookmark() {
         return em.createQuery(
 
@@ -42,15 +41,15 @@ public class BookmarkQueryRepository {
     }
 
 
-        private List<BookmarkSaveResponseDto> findBookmarkSaves(Long bookmarkId) {
-            return em.createQuery(
-                    "select new fitIn.fitInserver.dto.BookmarkSaveResponseDto(bs.bookmark.id, s.id,s.position)" +
+    public List<BookmarkSaveResponseDto> findBookmarkSaves(Long bookmarkId) {
+        return em.createQuery(
+                    "select new fitIn.fitInserver.dto.BookmarkSaveResponseDto(bs.bookmark.id, s.id,s.position,s.title)" +
                             " from BookmarkSave bs" +
                             " join bs.save s" +
                             " where bs.bookmark.id = : bookmarkId",BookmarkSaveResponseDto.class)
                     .setParameter("bookmarkId",bookmarkId)
                     .getResultList();
-        }
+    }
 
 
 

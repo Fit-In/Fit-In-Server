@@ -20,13 +20,13 @@ public class SaveController {
     @PostMapping("/save/recruit")
     public ResponseEntity<?> bookmarkRecruit(@RequestBody RecruitRequestDto recruitRequestDto){
 
-        return saveService.saveSave(recruitRequestDto.toRecruit_Save());
+        return saveService.saveRecruit(recruitRequestDto.toRecruit_Save());
     }
 
     @PostMapping("/save/news")
     public ResponseEntity<?> bookmarkNews(@RequestBody NewsRequestDto newsRequestDto){
 
-        return saveService.saveSave(newsRequestDto.toNews_Save());
+        return saveService.saveNews(newsRequestDto.toNews_Save());
     }
 
     @GetMapping("/save/recruit/{id}")

@@ -1,6 +1,9 @@
 package fitIn.fitInserver.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fitIn.fitInserver.repository.SaveRepository;
+import fitIn.fitInserver.service.BookmarkService;
+import fitIn.fitInserver.service.SaveService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,8 +31,10 @@ public class BookmarkSave {
     private Bookmark bookmark;
 
 
+
     public static BookmarkSave createBookmarkSave(Save save){
         BookmarkSave bookmarkSave = new BookmarkSave();
+
         bookmarkSave.setSave(save);
         return bookmarkSave;
     }

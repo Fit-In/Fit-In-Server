@@ -2,11 +2,11 @@ package fitIn.fitInserver.service;
 
 import fitIn.fitInserver.domain.*;
 import fitIn.fitInserver.dto.BookmarkRequestDto;
-import fitIn.fitInserver.repository.AccountRepository;
-import fitIn.fitInserver.repository.BookmarkQueryRepository;
-import fitIn.fitInserver.repository.BookmarkRepository;
-import fitIn.fitInserver.repository.SaveRepository;
+import fitIn.fitInserver.dto.BookmarkSaveResponseDto;
+import fitIn.fitInserver.dto.Response;
+import fitIn.fitInserver.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +23,7 @@ public class BookmarkService {
     private final SaveRepository saveRepository;
     private final BookmarkRepository bookmarkRepository;
     private final BookmarkQueryRepository bookmarkQueryRepository;
+    private final Response response;
 
     public ResponseEntity<?> bookmarkCreate(BookmarkRequestDto bookmarkRequestDto){
         Account account = accountRepository.findByEmail(bookmarkRequestDto.getAccountEmail()).orElseThrow(EntityNotFoundException::new);
@@ -34,21 +35,30 @@ public class BookmarkService {
 
     public ResponseEntity<?> bookmarkAdd(BookmarkRequestDto bookmarkRequestDto) {
 
-        Save save= saveRepository.findById(bookmarkRequestDto.getSaveId()).orElseThrow(EntityNotFoundException::new);
-        Bookmark bookmark= bookmarkRepository.findById(bookmarkRequestDto.getBookmarkId()).orElseThrow(EntityNotFoundException::new);
 
-        BookmarkSave bookmarkSave = BookmarkSave.createBookmarkSave(save);
-        Bookmark bookmarkAdd = Bookmark.addBookmark(bookmark ,bookmarkSave);
-        bookmarkRepository.save(bookmarkAdd);
+//        if(bookmarkSaveRepository.existsById(bookmarkRequestDto.getSaveId())){
+//            return response.fail("이미 저장한 데이터입니다.", HttpStatus.BAD_REQUEST);
+//        }
+//        else{
+            Save save= saveRepository.findById(bookmarkRequestDto.getSaveId()).orElseThrow(EntityNotFoundException::new);
+            Bookmark bookmark= bookmarkRepository.findById(bookmarkRequestDto.getBookmarkId()).orElseThrow(EntityNotFoundException::new);
 
-        return ResponseEntity.ok("북마크 추가 완료");
+            BookmarkSave bookmarkSave = BookmarkSave.createBookmarkSave(save);
+            Bookmark bookmarkAdd = Bookmark.addBookmark(bookmark ,bookmarkSave);
+
+
+            bookmarkRepository.save(bookmarkAdd);
+            return response.success(save.getId(),"북마크에 데이터를 저장했습니다.",HttpStatus.OK);
+
+//        }
     }
+
 
     public List<Bookmark> findBookmarks(String email) {
         return bookmarkQueryRepository.findAll(email);
     }
 
-    public Bookmark findBookmark(Long bookmarkId) {
-        return bookmarkRepository.findByid(bookmarkId);
+    public List<BookmarkSaveResponseDto> findBookmark(Long bookmarkId) {
+        return bookmarkQueryRepository.findBookmarkSaves(bookmarkId);
     }
 }
