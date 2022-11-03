@@ -1,6 +1,6 @@
 package fitIn.fitInserver.repository;
 
-import fitIn.fitInserver.domain.Bookmark;
+import fitIn.fitInserver.domain.bookmark.Bookmark;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

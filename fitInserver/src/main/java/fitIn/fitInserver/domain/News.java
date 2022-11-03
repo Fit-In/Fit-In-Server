@@ -1,9 +1,12 @@
 package fitIn.fitInserver.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -41,5 +44,11 @@ public class News {
 
     @Column
     private String time;
+
+
+
+
+
+
 
 }

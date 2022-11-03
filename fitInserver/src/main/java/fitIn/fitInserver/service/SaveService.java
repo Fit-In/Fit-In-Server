@@ -1,10 +1,9 @@
 package fitIn.fitInserver.service;
 
 
-import fitIn.fitInserver.domain.Account;
-import fitIn.fitInserver.domain.News_Save;
-import fitIn.fitInserver.domain.Recruit_Save;
-import fitIn.fitInserver.domain.Save;
+import fitIn.fitInserver.domain.bookmark.News_Save;
+import fitIn.fitInserver.domain.bookmark.Recruit_Save;
+import fitIn.fitInserver.domain.bookmark.Save;
 import fitIn.fitInserver.dto.NewsResponseDto;
 import fitIn.fitInserver.dto.RecruitResponseDto;
 import fitIn.fitInserver.dto.Response;

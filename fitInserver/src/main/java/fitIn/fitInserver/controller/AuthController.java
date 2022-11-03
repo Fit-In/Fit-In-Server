@@ -37,6 +37,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.checkEmailDuplicate(email));
     }
 
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Validated LoginRequestDto loginRequestDto, Errors errors){
         if(errors.hasErrors()){

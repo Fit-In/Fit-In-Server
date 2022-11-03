@@ -1,6 +1,6 @@
 package fitIn.fitInserver.repository;
 
-import fitIn.fitInserver.domain.Bookmark;
+import fitIn.fitInserver.domain.bookmark.Bookmark;
 import fitIn.fitInserver.dto.BookmarkResponseDto;
 import fitIn.fitInserver.dto.BookmarkSaveResponseDto;
 import lombok.RequiredArgsConstructor;

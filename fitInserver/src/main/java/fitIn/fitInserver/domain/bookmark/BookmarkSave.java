@@ -1,9 +1,6 @@
-package fitIn.fitInserver.domain;
+package fitIn.fitInserver.domain.bookmark;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import fitIn.fitInserver.repository.SaveRepository;
-import fitIn.fitInserver.service.BookmarkService;
-import fitIn.fitInserver.service.SaveService;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

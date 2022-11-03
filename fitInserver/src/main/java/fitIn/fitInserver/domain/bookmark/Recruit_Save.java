@@ -1,4 +1,4 @@
-package fitIn.fitInserver.domain;
+package fitIn.fitInserver.domain.bookmark;
 
 import lombok.*;
 
@@ -36,5 +36,7 @@ public class Recruit_Save extends Save {
 
     @Column(length=5000)
     private String specific_info;
+
+
 
 }

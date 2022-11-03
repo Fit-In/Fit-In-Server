@@ -1,7 +1,7 @@
 package fitIn.fitInserver.dto;
 
 
-import fitIn.fitInserver.domain.Recruit_Save;
+import fitIn.fitInserver.domain.bookmark.Recruit_Save;
 import fitIn.fitInserver.domain.Recruitment;
 
 import lombok.*;

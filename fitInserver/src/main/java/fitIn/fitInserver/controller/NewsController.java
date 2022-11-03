@@ -26,6 +26,9 @@ public class NewsController {
         Data = Data.concat(callNewsService.call(news));
         return Data;
     }
+//
+//    @GetMapping("/news/back")
+
 
     @GetMapping("/news/{id}")
     public NewsResponseDto findById(@PathVariable Long id){

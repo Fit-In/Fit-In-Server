@@ -1,12 +1,12 @@
-package fitIn.fitInserver.domain;
+package fitIn.fitInserver.domain.bookmark;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fitIn.fitInserver.domain.Account;
 import lombok.*;
 
 import javax.persistence.*;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

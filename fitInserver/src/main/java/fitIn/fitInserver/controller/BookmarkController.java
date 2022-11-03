@@ -1,15 +1,12 @@
 package fitIn.fitInserver.controller;
 
 
-import fitIn.fitInserver.domain.Bookmark;
+import fitIn.fitInserver.domain.bookmark.Bookmark;
 import fitIn.fitInserver.dto.BookmarkRequestDto;
 import fitIn.fitInserver.dto.BookmarkResponseDto;
 import fitIn.fitInserver.dto.BookmarkSaveResponseDto;
-import fitIn.fitInserver.dto.RecruitResponseDto;
 import fitIn.fitInserver.repository.BookmarkQueryRepository;
-import fitIn.fitInserver.service.AccountService;
 import fitIn.fitInserver.service.BookmarkService;
-import fitIn.fitInserver.service.SaveService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,12 +32,12 @@ public class BookmarkController {
         return bookmarkService.bookmarkCreate(bookmarkRequestDto);
     }
 
-
 //    @GetMapping("/bookmark/list")
 //    public List<Bookmark> BookmarkList(@RequestBody BookmarkRequestDto bookmarkRequestDto){
 //        return bookmarkService.findBookmarks(bookmarkRequestDto);
 //    }
 //
+
     @GetMapping("/bookmark/list/{email}")
     public List<Bookmark> BookmarkList(@PathVariable String email){
         return bookmarkService.findBookmarks(email);

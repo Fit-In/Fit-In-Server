@@ -1,6 +1,9 @@
 package fitIn.fitInserver.service;
 
 import fitIn.fitInserver.domain.*;
+import fitIn.fitInserver.domain.bookmark.Bookmark;
+import fitIn.fitInserver.domain.bookmark.BookmarkSave;
+import fitIn.fitInserver.domain.bookmark.Save;
 import fitIn.fitInserver.dto.BookmarkRequestDto;
 import fitIn.fitInserver.dto.BookmarkSaveResponseDto;
 import fitIn.fitInserver.dto.Response;
@@ -23,6 +26,7 @@ public class BookmarkService {
     private final SaveRepository saveRepository;
     private final BookmarkRepository bookmarkRepository;
     private final BookmarkQueryRepository bookmarkQueryRepository;
+    private final BookmarkSaveRepository bookmarkSaveRepository;
     private final Response response;
 
     public ResponseEntity<?> bookmarkCreate(BookmarkRequestDto bookmarkRequestDto){
@@ -43,13 +47,18 @@ public class BookmarkService {
             Save save= saveRepository.findById(bookmarkRequestDto.getSaveId()).orElseThrow(EntityNotFoundException::new);
             Bookmark bookmark= bookmarkRepository.findById(bookmarkRequestDto.getBookmarkId()).orElseThrow(EntityNotFoundException::new);
 
+            if(bookmarkSaveRepository.existsBySave_IdAndBookmark_id(save.getId(),bookmark.getId())){
+                return response.fail("이미 저장된 정보입니다.", HttpStatus.BAD_REQUEST);
+            }
+            else{
             BookmarkSave bookmarkSave = BookmarkSave.createBookmarkSave(save);
-            Bookmark bookmarkAdd = Bookmark.addBookmark(bookmark ,bookmarkSave);
+            Bookmark bookmarkAdd = Bookmark.addBookmark(bookmark, bookmarkSave);
 
 
             bookmarkRepository.save(bookmarkAdd);
-            return response.success(save.getId(),"북마크에 데이터를 저장했습니다.",HttpStatus.OK);
+            return response.success(save.getId(), "북마크에 데이터를 저장했습니다.", HttpStatus.OK);
 
+        }
 //        }
     }
 

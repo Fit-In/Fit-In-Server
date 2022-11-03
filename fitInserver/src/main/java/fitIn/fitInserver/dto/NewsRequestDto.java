@@ -2,13 +2,8 @@ package fitIn.fitInserver.dto;
 
 
 import fitIn.fitInserver.domain.News;
-import fitIn.fitInserver.domain.News_Save;
+import fitIn.fitInserver.domain.bookmark.News_Save;
 import lombok.*;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 
 @Getter
