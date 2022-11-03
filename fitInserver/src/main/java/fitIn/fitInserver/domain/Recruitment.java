@@ -1,9 +1,12 @@
 package fitIn.fitInserver.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -41,4 +44,6 @@ public class Recruitment {
 
     @Column(length=5000)
     private String specific_info;
+
+
 }

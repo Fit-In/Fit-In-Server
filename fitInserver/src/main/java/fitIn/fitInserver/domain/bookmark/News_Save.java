@@ -1,4 +1,4 @@
-package fitIn.fitInserver.domain;
+package fitIn.fitInserver.domain.bookmark;
 
 import lombok.*;
 
