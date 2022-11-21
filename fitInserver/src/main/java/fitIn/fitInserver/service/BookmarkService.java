@@ -31,7 +31,7 @@ public class BookmarkService {
 
     public ResponseEntity<?> bookmarkCreate(BookmarkRequestDto bookmarkRequestDto){
         Account account = accountRepository.findByEmail(bookmarkRequestDto.getAccountEmail()).orElseThrow(EntityNotFoundException::new);
-        Bookmark bookmark = Bookmark.createBookmark(account, bookmarkRequestDto.getBookmarkName());
+        Bookmark bookmark = Bookmark.createBookmark(account, bookmarkRequestDto.getBookmarkName(),bookmarkRequestDto.getBookmarkProfile(),bookmarkRequestDto.getBookmarkImage());
         bookmarkRepository.save(bookmark);
         return ResponseEntity.ok("북마크 생성 완료");
     }
