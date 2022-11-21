@@ -25,6 +25,8 @@ public class Bookmark {
     private Long id;
 
     private String bookmarkName;
+    private String bookmarkProfile;
+    private String bookmarkImage;
 
     @ManyToOne(fetch = LAZY)
     @JsonIgnore
@@ -53,10 +55,12 @@ public class Bookmark {
         bookmark.setBookmarkDate(LocalDateTime.now());
         return bookmark;
     }
-    public static Bookmark createBookmark(Account account, String bookmarkName){
+    public static Bookmark createBookmark(Account account, String bookmarkName,String bookmarkProfile,String bookmarkImage){
         Bookmark bookmark = new Bookmark();
         bookmark.setAccount(account);
         bookmark.setBookmarkName(bookmarkName);
+        bookmark.setBookmarkProfile(bookmarkProfile);
+        bookmark.setBookmarkImage(bookmarkImage);
         bookmark.setBookmarkDate(LocalDateTime.now());
         return bookmark;
     }
